@@ -9,6 +9,19 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.vscode/
+
+# scripts
+qr_cli.egg-info/
+qr_creator.egg-info/
+venv/
+firebase-privatekey.json
+__pycache__/
+
+# environment
+.env*
+!.env.example
 
 # macOS
 .DS_Store
+
