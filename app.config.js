@@ -31,7 +31,6 @@ export default {
     web: {
       favicon: "./assets/favicon.png",
     },
-    plugins: ["@react-native-google-signin/google-signin"],
     extra: {
       firebaseApiKey: process.env.FIREBASE_API_KEY,
       firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
