@@ -29,7 +29,7 @@ def create_qr_code(count):
         img = qr.make_image(fill_color="black", back_color="white")
 
         # save the qr code into "generated_qr" directory with the name of the file as the random uuid
-        os.system(f"mkdir -p {os.path.join(ROOT_DIR, 'generated_qr')}")
+        os.system(f"mkdir -p {os.path.join(ROOT_DIR, '..', 'generated_qr')}")
         img.save(os.path.join(ROOT_DIR, "..", "generated_qr", f"{random_uuid}.jpg"))
 
         click.echo(f"Image Saved with uuid: {random_uuid}")

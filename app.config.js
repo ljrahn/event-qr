@@ -19,10 +19,10 @@ export default {
     assetBundlePatterns: ["**/*"],
     ios: {
       supportsTablet: true,
-      googleServicesFile: "./GoogleService-Info.plist",
+      // googleServicesFile: "./GoogleService-Info.plist",
     },
     android: {
-      googleServicesFile: "./google-services.json",
+      // googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF",
