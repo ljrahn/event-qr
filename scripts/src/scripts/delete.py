@@ -14,18 +14,26 @@ def delete_document_firebase(all, document_id):
     """deletes firebase entry with document id specified, or all documents in the database. note all=True supercedes a specific document id"""
 
     if all:
-        batch = db.batch()
         all_qr_codes = db.collection(u'user').stream()
 
         # transform ids into firestore document with id as the uuid fetched from firebase
         document_refs = [db.collection(u'user').document(users.id) for users in all_qr_codes]
 
         # create a batch of all document initilizations
-        for document_ref in document_refs:
-            batch.delete(document_ref)
+        batches = []
+
+        counter = -1
+        # create a batch of all document initilizations
+        for idx, document_ref in enumerate(document_refs):
+            if (idx % 400 == 0):
+                batches.append(db.batch())
+                counter += 1
+
+            batches[counter].delete(document_ref)
 
         # commit and push batch to firebase
-        batch.commit()
+        for batch in batches:
+            batch.commit()
 
         click.echo("All documents delete from user collection")
 

@@ -38,27 +38,33 @@ def create_qr_code(count):
 @click.command()
 def push_qr_code_firebase():
     """creates firebase entry with document id specified by each qr codes file name. """
-    batch = db.batch()
-
     # fetch qr code names (uuids) from files stored in "generated_qr"
     qr_document_ids = [f.split(".")[0] for f in os.listdir(os.path.join(ROOT_DIR, "..", "generated_qr"))
                        if os.path.isfile(os.path.join(ROOT_DIR, "..", "generated_qr", f))]
 
-    existing_qr_codes = [document.id for document in db.collection(u'user').stream()]
+    existing_qr_codes = [document.id for document in db.collection('user').stream()]
 
     # transform ids into firestore document with id as the uuid fetched from files
-    document_refs = [db.collection(u'user').document(qr_document_id)
+    document_refs = [db.collection('user').document(qr_document_id)
                      for qr_document_id in qr_document_ids if qr_document_id not in existing_qr_codes]
 
     # define all meals initilized as false
     user_meals = {"dinnerFri": False, "midnightFri": False, "breakfastSat": False,
-                  "lunchSat": False, "dinnerSat": False, "midnightSat": False, "breakfastSun": False, "lunchSun": False}
+                  "lunchSat": False, "dinnerSat": False, "midnightSat": False, "breakfastSun": False, "lunchSun": False, "name": '', "workshopRaffle": 0}
 
+    batches = []
+
+    counter = -1
     # create a batch of all document initilizations
-    for document_ref in document_refs:
-        batch.create(document_ref, user_meals)
+    for idx, document_ref in enumerate(document_refs):
+        if (idx % 400 == 0):
+            batches.append(db.batch())
+            counter += 1
+
+        batches[counter].create(document_ref, user_meals)
 
     # commit and push batch to firebase
-    batch.commit()
+    for batch in batches:
+        batch.commit()
 
     click.echo("successfully pushed all qr codes")

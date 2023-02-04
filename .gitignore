@@ -16,12 +16,13 @@ generated_qr/
 qr_cli.egg-info/
 qr_creator.egg-info/
 venv/
-firebase-privatekey.json
+firebase-privatekey*.json
 __pycache__/
 
 # environment
 .env*
 !.env.example
+secrets/
 
 # macOS
 .DS_Store
