@@ -24,6 +24,7 @@ module.exports = function (api) {
             "@screens": "./src/screens",
             "@hooks": "./src/hooks",
             "@navigation": "./src/navigation",
+            "@context": "./src/context",
             "@config": "./src/config",
           },
         },
