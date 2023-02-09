@@ -5,6 +5,7 @@ import HackerValue from "@components/hackerValue";
 import HackerRaffleTickets from "@components/hackerRaffleTickets";
 import GetUserValues from "@components/getUserValues";
 import HackerName from "@components/hackerName";
+import firebase from 'firebase/compat/app';
 // import { Button } from "react-native-elements";
 
 /* 
@@ -58,14 +59,7 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         </Text>
         {/* Items wrapper */}
         <View style={styles.checkListItem}>
-          {/* 
-          THIS OPERATES AS A TODO LIST ADDING ELEMENTS 
-          {
-            hackerValItems.map((hackerVal, index) => {
-              return <HackerValue key={index} text={hackerVal} />
-            })
-          }
-          */}
+
           
           {/*
           TEST FOR GETTING FIREBASE DATA FOR A USERID
@@ -74,6 +68,8 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           PROPOSED CHECKBOX FROM LAST MEETING
           <Checkbox onChange={() => setState(...state, friBreakfast: true)} />
            */}
+
+          
           <HackerValue 
             text={'Friday Dinner'} 
             onChange={() => sethackerVal({

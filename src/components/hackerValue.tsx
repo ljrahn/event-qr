@@ -19,17 +19,19 @@ const HackerValue = (props: any) => {
 
   return (
     <View style={styles.item}>
+      
       <View style={styles.section}>
-        <Checkbox
+        
+        <Text style={styles.paragraph}>
+        {props.text}
+        </Text>
+      </View>
+      <Checkbox
           style={styles.checkbox}
           value={isChecked}
           onValueChange={setIsChecked}
           color={isChecked ? '#FF5F1F' : undefined}
         />
-        <Text style={styles.paragraph}>
-        {props.text}
-        </Text>
-      </View>
     </View>
   );
 }
