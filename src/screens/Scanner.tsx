@@ -100,15 +100,12 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   useEffect(() => {
     askForCameraPermission();
-    console.log(selected);
   }, []);
 
   const handleBarCodeScanned = async ({ text, data }: any) => {
     setScanned(true);
     setText(data);
     await getHacker(data);
-    console.log(hacker);
-    console.log("Type" + text + "\nData" + data);
   };
 
   if (hasPermission === null) {
