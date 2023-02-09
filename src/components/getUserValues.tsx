@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app'; // used ot be just firebase
 import 'firebase/database';
 
 const GetUserValues = (userID: any) => {
