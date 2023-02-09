@@ -92,6 +92,7 @@ const FirestoreProvider: React.FC<FirestoreProviderProps> = ({ children }) => {
         const newHackerObj: any = _.cloneDeep(hacker);
         delete newHackerObj.id;
         await setDoc(doc(db, "user", hacker.id), newHackerObj);
+        setHacker(hacker);
       } else {
         setError("Hacker does not exist!");
       }
