@@ -182,7 +182,6 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 color: "black",
                 fontSize: 18,
                 fontWeight: "700",
-                fontFamily: "Helvetica",
               }}
               onPress={() => setScanned(false)}
             ></Button>
