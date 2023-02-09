@@ -1,28 +1,38 @@
 import React, { useState } from "react";
-import {Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {Button, SafeAreaView, ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Button } from "react-native-elements";
 import HackerValue from "@components/hackerValue";
+import HackerRaffleTickets from "@components/hackerRaffleTickets";
 import GetUserValues from "@components/getUserValues";
+import HackerName from "@components/hackerName";
+// import { Button } from "react-native-elements";
+
+/* 
+* ????????????? 
+* how to import hacker from scanner.tsx
+* import Hacker from "Scanner";
+*/
 
 const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  const [hackerVal, sethackerVal] = useState();
+  // const [hackerVal, sethackerVal] = useState();
   const [hackerValItems, sethackerValItems] = useState([]);
 
-  /* state for hacker values, food tickets
-  const {state, setState} = useState({
-    friDinner: false,
-    satBreakfast: false,
-    satLun: false,
-    satDinner: false,
-    sunBreakfast: false,
-    sunLun: false,
-    sunDinner: false,
-    hackerName: "PLACEHOLDER",
-    raffleTickets: 0,
+  // state for hacker values, food tickets
+  const {hackerVal, sethackerVal} = useState({
+    id: "",
+    breakfastSat: false,
+    breakfastSun: false,
+    dinnerFri: false,
+    dinnerSat: false,
+    lunchSat: false,
+    lunchSun: false,
+    midnightFri: false,
+    midnightSat: false,
+    name: "PLACEHOLDER",
+    workshopRaffle: 0,
   });
   // Checkbox onChange={() => setState(...state, friBreakfast: true)}
-  */
+  
   /*
   // Adds values to the display (learning)
   const handleAddValue = () => {
@@ -34,9 +44,15 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   */
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Navigation back to Scanner Page*/}
+      <Button
+        title=" Go Back to Scanner"
+        onPress={() => navigation.navigate("Scanner")}
+      />
       {/*<Text>DetailedUserView</Text>*/}
       {/* checklist wrapper */}
+      <ScrollView>      
       <View style={styles.checkListWrapper}>
         <Text style={styles.checkListTitle}>
           Hacker Data Values
@@ -59,28 +75,99 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           PROPOSED CHECKBOX FROM LAST MEETING
           <Checkbox onChange={() => setState(...state, friBreakfast: true)} />
            */}
-          <HackerValue text={'Friday Dinner'} />
-          <HackerValue text={'Saturday Breakfast'} />
-          <HackerValue text={'Saturday Dinner'} />
-          <HackerValue text={'Saturday Lunch'} />
-          <HackerValue text={'Sunday Breakfast'} />
-          <HackerValue text={'Sunday Lunch'} />
-          <HackerValue text={'Sunday Dinner'} />
+          <HackerValue 
+            text={'Friday Dinner'} 
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              dinnerFri: !hackerVal.dinnerFri
+              })}
+          />
+          <HackerValue 
+            text={'Saturday Breakfast'}
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              breakfastSat: !hackerVal.breakfastSat
+              })}
+          />
+          <HackerValue 
+            text={'Saturday Lunch'}
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              lunchSat: !hackerVal.lunchSat
+              })}
+          />
+          <HackerValue 
+            text={'Saturday Dinner'} 
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              dinnerSat: !hackerVal.dinnerSat
+              })}
+          />
+          <HackerValue 
+            text={'Sunday Breakfast'}
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              breakfastSun: !hackerVal.breakfastSun
+              })}
+          />
+          <HackerValue 
+            text={'Sunday Lunch'}
+            onChange={() => sethackerVal({
+              ...hackerVal, 
+              lunchSun: !hackerVal.lunchSun
+              })}
+          />
+          <HackerName 
+            text={'Hacker Name'} 
+          />
+          <HackerRaffleTickets 
+            text={'Raffle Tickets'} />
         </View>
+        
+      
+        <TouchableOpacity 
+        style={styles.databaseButton}
+        onPress={() => sethackerVal({
+          ...hackerVal
+        })}
+        >
+          <Text style={styles.databaseButtonText}>UPDATE DATABASE</Text>
+        </TouchableOpacity>
+
       </View>
 
       {/* Keyboard Input */}
       {/* @ TextInputA value is the entered text i.e hacker Name and Raffle 
         value={textInput}
         onChangeText={text => sethackerVal(text)}*/}
-      {/* @TouchableOpacity onPress={() => handleAddValue()} */}
+      {/* @TouchableOpacity onPress={() => handleAddValue()} 
+      
+      
+      
+        <View style={styles.databaseButton}>
+          <Button
+            title="UPDATE DATABASE"
+            // style={styles.databaseButton}
+            color="#FF5F1F"
+            onPress={() => sethackerVal({
+              ...hackerVal
+            })}
+          />
+      
+      */}
+      
+
+      
+      
+      </ScrollView>
+      {/*
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.writeDataWrapper}
         >
         <TextInput 
         style={styles.input} 
-        placeholder={'Update Firebase'}
+        placeholder={'Update Text'}
         />
         <TouchableOpacity
         >
@@ -89,15 +176,10 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-
+*/}
       
-      {/* Navigation back to Scanner Page*/}
-      <Button
-        title="Navigate Scanner"
-        style={styles.button}
-        onPress={() => navigation.navigate("Scanner")}
-      />
-    </View>
+
+    </SafeAreaView>
   );
 };
 
@@ -110,8 +192,9 @@ const styles = StyleSheet.create({
     //justifyContent: "center"
   },  
   checkListWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 90,
   },
   checkListTitle: {
     fontSize: 24,
@@ -123,7 +206,7 @@ const styles = StyleSheet.create({
   },
   writeDataWrapper: {
     position: 'absolute',
-    bottom: 60,
+    bottom: 20,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -154,6 +237,23 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
   },
+  databaseButton: {
+    width: "100%",
+    height: 70,
+    backgroundColor: "#FF5F1F",
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    borderRadius: 25,
+    elevation: 3,
+    fontSize: 70,
+    fontWeight: "bold",
+  },
+  databaseButtonText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#fff",
+}
 });
 
 export default DetailedUserView;

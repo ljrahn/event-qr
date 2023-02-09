@@ -1,19 +1,70 @@
-import React from "react";
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Button, StyleSheet, Text, Touchable, TouchableOpacity, View, Switch } from "react-native";
+import Checkbox from 'expo-checkbox';
 
-const HackerValue = (props: any) => {
-  return (
-    <View style={styles.item}>
-      <View style={styles.itemLeft}>
-        <View style={styles.square}></View>
-        <Text style={styles.itemText}>{props.text}</Text>
-      </View>
-      <View style={styles.circular}></View>
-    </View>
-  )
+const options = {
+  breakfastSat: false,
+  breakfastSun: false,
+  dinnerFri: false,
+  dinnerSat: false,
+  lunchSat: false,
+  lunchSun: false,
+  midnightFri: false,
+  midnightSat: false,
 }
 
+const HackerValue = (props: any) => {
+  
+  const [isChecked, setIsChecked] = useState(false);
+
+  return (
+    <View style={styles.item}>
+      <View style={styles.section}>
+        <Checkbox
+          style={styles.checkbox}
+          value={isChecked}
+          onValueChange={setIsChecked}
+          color={isChecked ? '#FF5F1F' : undefined}
+        />
+        <Text style={styles.paragraph}>
+        {props.text}
+        </Text>
+      </View>
+    </View>
+  );
+}
+/* old button
+    <View style={styles.item}>
+      <Button
+        title={props.text}
+      >
+        <View style={styles.itemLeft}>
+          <View style={styles.square}></View>
+          <Text style={styles.itemText}>{props.text}</Text>
+        </View>
+        <View style={styles.circular}></View>
+      </Button>
+    </View>
+  )
+*/
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 16,
+    marginVertical: 32,
+  },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paragraph: {
+    fontSize: 15,
+  },
+  checkbox: {
+    marginRight: 8,
+  },
+  
+  
   item: {
     backgroundColor: '#FFF',
     padding: 15,
