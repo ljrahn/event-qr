@@ -70,7 +70,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       case "9":
         await updateHacker({
           ...hacker,
-          workshopRaffle: hacker.workshopRaffle++,
+          workshopRaffle: ++hacker.workshopRaffle,
         });
         if (error) {
           showMessage({
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
+    paddingBottom: 90,
   },
   button: {
     marginVertical: 10,

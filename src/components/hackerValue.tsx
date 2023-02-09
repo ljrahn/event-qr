@@ -31,7 +31,7 @@ const HackerValue = (props: any) => {
         style={styles.checkbox}
         value={props.value}
         onValueChange={props.onChange}
-        color={props.value ? "#FF5F1F" : undefined}
+        color={props.value ? "#A7A7A7" : undefined}
       />
     </View>
   );
@@ -62,13 +62,15 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 15,
+    fontWeight: "bold",
+    color: "white",
   },
   checkbox: {
     marginRight: 8,
   },
 
   item: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#262626",
     padding: 15,
     borderRadius: 10,
     flexDirection: "row",

@@ -41,7 +41,7 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   useEffect(() => {
     // Remove!!
-    getHacker("000e556377b34c8d954b67acf22b0ac5");
+    // getHacker("000e556377b34c8d954b67acf22b0ac5");
 
     // Keep!!
     if (error) {
@@ -60,7 +60,12 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   }, []);
 
   const updateDatabase = async () => {
-    await updateHacker(hackerVal);
+    // Casts workshopRaffle as a Number after textinput from hackerRaffleTickets.tsx
+    const newWorkshopRaffle = Number(hackerVal.workshopRaffle);
+    await updateHacker({
+      ...hackerVal,
+      workshopRaffle: newWorkshopRaffle,
+    });
 
     if (error) {
       setPopupDisplay({
@@ -100,11 +105,13 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Navigation back to Scanner Page*/}
-      <Button
-        title=" Go Back to Scanner"
+      {/* Navigation back to Scanner Page
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate("Scanner")}
-      />
+      >
+        <Text style={styles.databaseButtonText}>Go Back to Scanner</Text>
+      </TouchableOpacity>*/}
       {!!popupDisplay.msg && (
         <View
           style={popupDisplay.displaySuccess ? styles.success : styles.error}
@@ -214,7 +221,7 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             style={styles.databaseButton}
             onPress={() => updateDatabase()}
           >
-            <Text style={styles.databaseButtonText}>UPDATE DATABASE</Text>
+            <Text style={styles.databaseButtonText}>UPDATE HACKER</Text>
           </TouchableOpacity>
         </View>
 
@@ -262,25 +269,27 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "black",
     //paddingTop: 20,
     //alignItems: "center",
     //justifyContent: "center"
   },
   checkListWrapper: {
     paddingTop: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
     paddingBottom: 90,
   },
   checkListTitle: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#FFF",
   },
   hackerNameplate: {
     alignItems: "center",
     justifyContent: "center",
     fontSize: 24,
     fontWeight: "bold",
+    color: "#FFF",
   },
   checkListItem: {
     marginTop: 30,
@@ -314,12 +323,15 @@ const styles = StyleSheet.create({
   },
   addText: {},
   button: {
-    marginTop: 10,
+    marginHorizontal: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "darkgray",
   },
   databaseButton: {
     width: "100%",
     height: 70,
-    backgroundColor: "#FF5F1F",
+    backgroundColor: "darkgray",
     alignItems: "center",
     justifyContent: "center",
 
@@ -331,7 +343,7 @@ const styles = StyleSheet.create({
   databaseButtonText: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000",
   },
 
   error: {

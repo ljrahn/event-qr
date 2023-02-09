@@ -29,9 +29,9 @@ const HackerName = (props: any) => {
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
-        <Text>{props.text}</Text>
+        <Text style={styles.itemText}>{props.text}</Text>
 
-        <Text>{"  =  " + prevName}</Text>
+        <Text style={styles.itemText}>{"  =  " + prevName}</Text>
         <TextInput
           style={styles.input}
           onChangeText={props.onChangeName}
@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: "#FF8F2F",
+    backgroundColor: "#A7A7A7",
   },
 
   item: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#262626",
     padding: 15,
     borderRadius: 10,
     flexDirection: "row",
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "80%",
     fontWeight: "bold",
+    color: "white",
   },
 });
 
