@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import useAuth from "@hooks/useAuth";
 import useFirestore from "@hooks/useFirestore";
 import { Button } from "react-native-elements";
@@ -7,6 +7,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { signOut, getAuth } from "firebase/auth";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { SelectList } from "react-native-dropdown-select-list";
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from 'react-native-flash-message';
 
 const auth = getAuth();
 
@@ -28,9 +30,66 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     { key: "6", value: "lunchSun" },
     { key: "7", value: "midnightFri" },
     { key: "8", value: "midnightSat" },
-    { key: "9", value: "name" },
-    { key: "10", value: "workshopRaffle" },
+    { key: "9", value: "workshopRaffle" },
   ];
+
+
+  const updateValue = () => {
+      switch(selected){
+        case "1":
+          updateHacker({...hacker , breakfastSat: !hacker.breakfastSat});
+          updateHackerMessage("Breakfast Saturday for Hacker Updated", true);
+          break;
+        case "2":
+          updateHacker({...hacker, breakfastSun: !hacker.breakfastSun});
+          updateHackerMessage("Breakfast Sunday for Hacker Updated", true);
+          break;        
+        case "3":
+          updateHacker({...hacker , dinnerFri: !hacker.dinnerFri});
+          updateHackerMessage("Dinner Friday for Hacker Updated", true);
+          break;
+        case "4":
+          updateHacker({...hacker , dinnerSat: !hacker.dinnerSat});
+          updateHackerMessage("Dinner Saturday for Hacker Updated", true);
+          break;
+        case "5":
+          updateHacker({...hacker , lunchSat: !hacker.lunchSat});
+          updateHackerMessage("Lunch Saturday for Hacker Updated", true);
+          break;
+        case "6":
+          updateHacker({...hacker , lunchSun: !hacker.lunchSun});
+          updateHackerMessage("Lunch Sunday for Hacker Updated", true);
+          break;
+        case "7":
+          updateHacker({...hacker , midnightFri: !hacker.midnightFri});
+          updateHackerMessage("Midnight Friday for Hacker Updated", true);
+          break;
+        case "8":
+          updateHacker({...hacker , midnightSat: !hacker.midnightSat});
+          updateHackerMessage("Midnight Saturday for Hacker Updated", true);
+          break;
+        case "9":
+          updateHacker({...hacker , workshopRaffle: hacker.workshopRaffle++});
+          updateHackerMessage("WorkShopRaffle for Hacker Updated", true);
+          break;
+        default:
+          updateHackerMessage("No Field Selected", false);
+          break;
+      }
+  }
+
+  const updateHackerMessage = (message: string, result: boolean) => {
+    result ? 
+      showMessage({
+        message: message,
+        type: 'success',
+      })
+      :
+      showMessage({
+        message: message,
+        type: 'warning',
+      })
+  }
 
   const askForCameraPermission = () => {
     (async () => {
@@ -41,12 +100,14 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   useEffect(() => {
     askForCameraPermission();
+    console.log(selected);
   }, []);
 
   const handleBarCodeScanned = async ({ text, data }: any) => {
     setScanned(true);
     setText(data);
-    await getHacker(text);
+    await getHacker(data);
+    console.log(hacker);
     console.log("Type" + text + "\nData" + data);
   };
 
@@ -73,13 +134,19 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       <View style={styles.barcodeBox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={{ height: 400, width: 400 }}
+          style={{ height: 400, width: 400, borderColor: "#fff", borderWidth: 2 }}
         />
       </View>
-      <Text style={styles.mainText}>{text}</Text>
-
+      <Text style={styles.mainText}>Welcome {user?.email}!</Text>
       {scanned && (
-        <Button title={"Scan Again"} onPress={() => setScanned(false)}></Button>
+        <Button title={"Scan Again"} style={styles.scanAgainButton}  type="outline"
+        buttonStyle={{
+          backgroundColor: "#fff",
+          borderRadius: 5,
+          borderColor: '#000000',
+          borderWidth: 2,
+        }}
+                titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700', fontFamily: 'Helvetica',}} onPress={() => setScanned(false)}></Button>
       )}
 
       {!!error && (
@@ -87,31 +154,60 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           <Text>{error}</Text>
         </View>
       )}
-
-      <Text>Welcome {user?.email}!</Text>
-      <Text>{hacker.id}</Text>
+      <Text style={styles.hackerText}>HackerID: {hacker.id}</Text>
 
       <SelectList
         data={data}
         setSelected={setSelected}
-        dropdownStyles={{ backgroundColor: "gray" }}
-        dropdownTextStyles={{ color: "white" }}
+        dropdownStyles={{ backgroundColor: "#fff",}}
+        dropdownTextStyles={{ color: "#000000" }}
+        boxStyles={{ borderColor: "#000000", borderWidth: 2}}
+        inputStyles={{ color: "#000000", borderColor: "#fff", fontWeight: '700', fontFamily: 'Helvetica',}}
       />
       <Button
         title="Update Hacker"
         style={styles.button}
-        onPress={() => updateHacker(hacker)}
+        type="outline"
+                buttonStyle={{
+                backgroundColor: "#FFF",
+                borderRadius: 5,
+                borderColor: '#000000',
+                borderWidth: 2,
+              }}
+              titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700', fontFamily: 'Helvetica',}}
+        disabled={!scanned}
+        onPress={() => updateValue()}
+
       />
       <Button
-        title="Navigate DetailedUserView"
+        title="Navigate DetailedUserView "
         style={styles.button}
+        type="outline"
+        buttonStyle={{
+          backgroundColor: "#fff",
+          borderRadius: 5,
+          borderColor: '#000000',
+          borderWidth: 2,
+        }}
+                titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700', fontFamily: 'Helvetica',}}
+        disabled={!scanned}
         onPress={() => navigation.navigate("DetailedUserView")}
       />
       <Button
         title="Sign Out"
+        type="outline"
+        buttonStyle={{
+            backgroundColor: "#fff",
+            borderRadius: 5,
+            borderColor: '#000000',
+            borderWidth: 2,
+                
+              }}
+        titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700',    fontFamily: 'Helvetica'}}
         style={styles.button}
         onPress={() => signOut(auth)}
-      />
+      />  
+      <FlashMessage style={{height: '20px'}} position="top"/>
     </View>
   );
 };
@@ -119,18 +215,33 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
   },
   button: {
-    marginTop: 5,
+    marginTop: 10,
+    width: 300,
+    marginBottom: 5,
+    borderColor: "#fff",
+    borderRadius: 10,
+    color: "#fff",
+  },
+  scanAgainButton: {
+    marginTop: 20,
+    width: 200,
+    marginBottom: 10,
   },
   mainText: {
     margin: 20,
-    fontSize: 16,
+    fontSize: 20,
+    fontFamily: 'Helvetica',
   },
-
+  hackerText: {
+    margin: 20,
+    fontSize: 15,
+    fontFamily: 'Helvetica',
+  },
   error: {
     marginTop: 10,
     padding: 10,
