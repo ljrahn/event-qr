@@ -17,7 +17,7 @@ const hackerVal = {
 
 const HackerRaffleTickets = (props: any) => {
   
-  const [workshopRaffle, onChangeWorkshopRaffle] = React.useState('');
+  const [workshopRaffle, onChangeWorkshopRaffle] = React.useState(props.workshopRaffle);
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
@@ -27,12 +27,12 @@ const HackerRaffleTickets = (props: any) => {
         </Text>
         
         <Text>
-          {'  =  ' +  hackerVal.workshopRaffle}
+          {'  =  ' +  workshopRaffle}
         </Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeWorkshopRaffle}
-          value={workshopRaffle}
+          onChangeText={props.onChangeWorkshopRaffle}
+          value={props.workshopRaffle}
           placeholder="Overwrite Number of Tickets"
           keyboardType="numeric"
         />

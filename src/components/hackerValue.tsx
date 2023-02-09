@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, Touchable, TouchableOpacity, View, Switch } from "react-native";
-import Checkbox from 'expo-checkbox';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+  Switch,
+} from "react-native";
+import Checkbox from "expo-checkbox";
 
 const options = {
   breakfastSat: false,
@@ -11,30 +19,23 @@ const options = {
   lunchSun: false,
   midnightFri: false,
   midnightSat: false,
-}
+};
 
 const HackerValue = (props: any) => {
-  
-  const [isChecked, setIsChecked] = useState(false);
-
   return (
     <View style={styles.item}>
-      
       <View style={styles.section}>
-        
-        <Text style={styles.paragraph}>
-        {props.text}
-        </Text>
+        <Text style={styles.paragraph}>{props.text}</Text>
       </View>
       <Checkbox
-          style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setIsChecked}
-          color={isChecked ? '#FF5F1F' : undefined}
-        />
+        style={styles.checkbox}
+        value={props.value}
+        onValueChange={props.onChange}
+        color={props.value ? "#FF5F1F" : undefined}
+      />
     </View>
   );
-}
+};
 /* old button
     <View style={styles.item}>
       <Button
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
     marginVertical: 32,
   },
   section: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   paragraph: {
     fontSize: 15,
@@ -65,38 +66,37 @@ const styles = StyleSheet.create({
   checkbox: {
     marginRight: 8,
   },
-  
-  
+
   item: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   square: {
     width: 25,
     height: 25,
-    backgroundColor: '#A020F0',
+    backgroundColor: "#A020F0",
     opacity: 0.7,
     borderRadius: 8,
     marginRight: 15,
   },
   itemText: {
-    maxWidth: '80%',
-    fontWeight: 'bold',
+    maxWidth: "80%",
+    fontWeight: "bold",
   },
   circular: {
     width: 12,
     height: 12,
-    borderColor: '000',
+    borderColor: "000",
     borderWidth: 2,
     borderRadius: 8,
   },
