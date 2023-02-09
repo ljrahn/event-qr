@@ -117,6 +117,7 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       <ScrollView>
         <View style={styles.checkListWrapper}>
           <Text style={styles.checkListTitle}>Hacker Data Values</Text>
+          <Text style={styles.checkListTitle}>Hacker: {hackerVal.name}</Text>
           {/* Items wrapper */}
           <View style={styles.checkListItem}>
             {/*
