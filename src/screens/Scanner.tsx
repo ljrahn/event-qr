@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import useAuth from "@hooks/useAuth";
 import useFirestore from "@hooks/useFirestore";
 import { Button } from "react-native-elements";
@@ -8,7 +8,7 @@ import { signOut, getAuth } from "firebase/auth";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { SelectList } from "react-native-dropdown-select-list";
 import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 const auth = getAuth();
 
@@ -143,7 +143,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           borderColor: '#000000',
           borderWidth: 2,
         }}
-                titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700', fontFamily: 'Helvetica',}} onPress={() => setScanned(false)}></Button>
+        titleStyle={{ marginHorizontal: 20, color: 'black', fontSize:18, fontWeight: '700', fontFamily: 'Helvetica',}} onPress={() => setScanned(false)}></Button>
       )}
 
       {!!error && (
@@ -204,7 +204,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         style={styles.button}
         onPress={() => signOut(auth)}
       />  
-      <FlashMessage style={{height: '20px'}} position="top"/>
+      <FlashMessage position="top"/>
     </View>
   );
 };
