@@ -18,7 +18,7 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [hackerValItems, sethackerValItems] = useState([]);
 
   // state for hacker values, food tickets
-  const {hackerVal, sethackerVal} = useState({
+  const [hackerVal, sethackerVal] = useState({
     id: "",
     breakfastSat: false,
     breakfastSun: false,
@@ -31,7 +31,6 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     name: "PLACEHOLDER",
     workshopRaffle: 0,
   });
-  // Checkbox onChange={() => setState(...state, friBreakfast: true)}
   
   /*
   // Adds values to the display (learning)
