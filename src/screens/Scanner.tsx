@@ -13,7 +13,7 @@ const auth = getAuth();
 
 const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const { hacker, getHacker, updateHacker, error, setError } = useFirestore();
-
+  const [isScannerPresent, setIsScannerPresent] = useState<boolean>(true);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [selected, setSelected] = useState("");
@@ -115,21 +115,24 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   useEffect(() => {
     askForCameraPermission();
+    setIsScannerPresent(true);
+    console.log(`IS SCANNER PRESENT ${isScannerPresent}`);
   }, []);
 
   useEffect(() => {
-    showMessage({
-      message: "Error Loading Hacker. Likely Invalid QR Code",
-      type: "danger",
-    });
-    setError("");
+    if (error) {
+      showMessage({
+        message: "Error Loading Hacker. Likely Invalid QR Code",
+        type: "danger",
+      });
+      setError("");
+    }
   }, [error]);
 
   const handleBarCodeScanned = async ({ text, data }: any) => {
     setScanned(true);
     await getHacker(data);
   };
-  console.log(scanned);
 
   if (hasPermission === null) {
     return (
@@ -175,16 +178,19 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.barcodeBox}>
-            <BarCodeScanner
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              style={{
-                width: "100%",
-                height: "100%",
-                borderWidth: 2,
-              }}
-            />
-          </View>
+          {isScannerPresent && (
+            <View style={styles.barcodeBox}>
+              <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderWidth: 2,
+                }}
+              />
+            </View>
+          )}
+
           {scanned && (
             <>
               <View style={styles.scanAgainButton}>
@@ -238,7 +244,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 backgroundColor: "#262626",
                 borderRadius: 5,
                 borderWidth: 2,
-                borderColor: "#262626"
+                borderColor: "#262626",
               }}
               titleStyle={{
                 marginHorizontal: 20,
@@ -259,7 +265,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 backgroundColor: "#262626",
                 borderRadius: 5,
                 borderWidth: 2,
-                borderColor: "#262626"
+                borderColor: "#262626",
               }}
               titleStyle={{
                 marginHorizontal: 20,
@@ -268,7 +274,11 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 fontWeight: "700",
               }}
               disabled={!scanned}
-              onPress={() => navigation.navigate("DetailedUserView")}
+              onPress={() => {
+                navigation.navigate("DetailedUserView");
+                setIsScannerPresent(false);
+                setTimeout(() => setIsScannerPresent(true), 1000);
+              }}
             />
           </View>
         </View>

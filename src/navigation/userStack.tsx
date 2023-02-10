@@ -15,7 +15,7 @@ export default function UserStack() {
         <Stack.Screen name="Scanner" component={Scanner} />
         <Stack.Screen name="DetailedUserView" component={DetailedUserView} />
       </Stack.Navigator>
-      <FlashMessage position="top" />
+      <FlashMessage style={{ marginTop: 98 }} position="top" />
     </NavigationContainer>
   );
 }
