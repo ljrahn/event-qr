@@ -2,8 +2,9 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "food-ticket-scanner",
+    name: "Food Ticket Scanner",
     slug: "food-ticket-scanner",
+    description: "Food ticket scanner app",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",

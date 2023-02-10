@@ -1,6 +1,11 @@
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@config/firebase";
-import React, { createContext, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
 import _ from "lodash";
 
 interface HackerInterface {
@@ -19,6 +24,7 @@ interface HackerInterface {
 
 interface FirestoreInterface {
   hacker: HackerInterface;
+  setHacker: Dispatch<SetStateAction<HackerInterface>>;
   getHacker: (id: string) => void;
   updateHacker: (hacker: HackerInterface) => void;
   isLoading: boolean;
@@ -42,6 +48,7 @@ const defaultHacker = {
 
 const defaultFirestore: FirestoreInterface = {
   hacker: defaultHacker,
+  setHacker: () => null,
   getHacker: () => null,
   updateHacker: () => null,
   isLoading: false,
@@ -106,7 +113,15 @@ const FirestoreProvider: React.FC<FirestoreProviderProps> = ({ children }) => {
 
   return (
     <FirestoreContext.Provider
-      value={{ hacker, isLoading, getHacker, updateHacker, error, setError }}
+      value={{
+        hacker,
+        setHacker,
+        isLoading,
+        getHacker,
+        updateHacker,
+        error,
+        setError,
+      }}
     >
       {children}
     </FirestoreContext.Provider>

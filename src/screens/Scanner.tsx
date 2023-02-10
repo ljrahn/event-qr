@@ -11,8 +11,23 @@ import FlashMessage, { showMessage } from "react-native-flash-message";
 
 const auth = getAuth();
 
+const defaultHacker = {
+  id: "",
+  breakfastSat: false,
+  breakfastSun: false,
+  dinnerFri: false,
+  dinnerSat: false,
+  lunchSat: false,
+  lunchSun: false,
+  midnightFri: false,
+  midnightSat: false,
+  name: "",
+  workshopRaffle: 0,
+};
+
 const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  const { hacker, getHacker, updateHacker, error, setError } = useFirestore();
+  const { hacker, getHacker, setHacker, updateHacker, error, setError } =
+    useFirestore();
   const [isScannerPresent, setIsScannerPresent] = useState<boolean>(true);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
@@ -116,7 +131,6 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   useEffect(() => {
     askForCameraPermission();
     setIsScannerPresent(true);
-    console.log(`IS SCANNER PRESENT ${isScannerPresent}`);
   }, []);
 
   useEffect(() => {
@@ -125,6 +139,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         message: "Error Loading Hacker. Likely Invalid QR Code",
         type: "danger",
       });
+      setHacker(defaultHacker);
       setError("");
     }
   }, [error]);
@@ -192,31 +207,31 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           )}
 
           {scanned && (
-            <>
-              <View style={styles.scanAgainButton}>
-                <Button
-                  title={"Scan Again"}
-                  type="outline"
-                  buttonStyle={{
-                    backgroundColor: "#fff",
-                    borderRadius: 5,
-                    borderColor: "#000000",
-                    borderWidth: 2,
-                  }}
-                  titleStyle={{
-                    marginHorizontal: 20,
-                    color: "black",
-                    fontSize: 16,
-                    fontWeight: "700",
-                  }}
-                  onPress={() => setScanned(false)}
-                ></Button>
-              </View>
-              <View style={styles.hackerBackground}>
-                <Text style={styles.hackerHeader}>HackerID</Text>
-                <Text style={styles.hackerText}>{hacker.id}</Text>
-              </View>
-            </>
+            <View style={styles.scanAgainButton}>
+              <Button
+                title={"Scan Again"}
+                type="outline"
+                buttonStyle={{
+                  backgroundColor: "#fff",
+                  borderRadius: 5,
+                  borderColor: "#000000",
+                  borderWidth: 2,
+                }}
+                titleStyle={{
+                  marginHorizontal: 20,
+                  color: "black",
+                  fontSize: 16,
+                  fontWeight: "700",
+                }}
+                onPress={() => setScanned(false)}
+              ></Button>
+            </View>
+          )}
+          {scanned && hacker.id && (
+            <View style={styles.hackerBackground}>
+              <Text style={styles.hackerHeader}>HackerID</Text>
+              <Text style={styles.hackerText}>{hacker.id}</Text>
+            </View>
           )}
 
           <SelectList
@@ -252,7 +267,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 fontSize: 16,
                 fontWeight: "700",
               }}
-              disabled={!scanned}
+              disabled={!scanned || !hacker.id}
               onPress={() => updateValue()}
             />
           </View>
@@ -273,7 +288,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 fontSize: 16,
                 fontWeight: "700",
               }}
-              disabled={!scanned}
+              disabled={!scanned || !hacker.id}
               onPress={() => {
                 navigation.navigate("DetailedUserView");
                 setIsScannerPresent(false);
