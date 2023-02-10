@@ -1,12 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import useAuth from "@hooks/useAuth";
 import useFirestore from "@hooks/useFirestore";
 import { Button } from "react-native-elements";
@@ -14,19 +7,15 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { signOut, getAuth } from "firebase/auth";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { SelectList } from "react-native-dropdown-select-list";
-import FlashMessage from "react-native-flash-message";
-import { showMessage } from "react-native-flash-message";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 const auth = getAuth();
 
 const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  let ScreenHeight = Dimensions.get("window").height;
-  const { user } = useAuth();
   const { hacker, getHacker, updateHacker, error, setError } = useFirestore();
 
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("Not yet Scanned");
   const [selected, setSelected] = useState("");
 
   const data = [
@@ -128,11 +117,19 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     askForCameraPermission();
   }, []);
 
+  useEffect(() => {
+    showMessage({
+      message: "Error Loading Hacker. Likely Invalid QR Code",
+      type: "danger",
+    });
+    setError("");
+  }, [error]);
+
   const handleBarCodeScanned = async ({ text, data }: any) => {
     setScanned(true);
-    setText(data);
     await getHacker(data);
   };
+  console.log(scanned);
 
   if (hasPermission === null) {
     return (
@@ -153,134 +150,140 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: "#FFF" }}>
-      <View style={styles.container}>
-        <View style={styles.barcodeBox}>
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={{
-              width: "100%",
-              height: "100%",
+    <>
+      <ScrollView style={{ backgroundColor: "black" }}>
+        <View style={styles.container}>
+          <View style={{ width: 300 }}>
+            <View style={styles.signOutButton}>
+              <Button
+                title="Sign Out"
+                type="outline"
+                buttonStyle={{
+                  backgroundColor: "#fff",
+                  borderRadius: 5,
+                }}
+                titleStyle={{
+                  marginHorizontal: 20,
+                  color: "black",
+                  fontSize: 15,
+                  fontWeight: "600",
+                }}
+                onPress={() => signOut(auth)}
+              />
+            </View>
+          </View>
+
+          <View style={styles.barcodeBox}>
+            <BarCodeScanner
+              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderWidth: 2,
+              }}
+            />
+          </View>
+          {scanned && (
+            <>
+              <View style={styles.scanAgainButton}>
+                <Button
+                  title={"Scan Again"}
+                  type="outline"
+                  buttonStyle={{
+                    backgroundColor: "#fff",
+                    borderRadius: 5,
+                    borderColor: "#000000",
+                    borderWidth: 2,
+                  }}
+                  titleStyle={{
+                    marginHorizontal: 20,
+                    color: "black",
+                    fontSize: 16,
+                    fontWeight: "700",
+                  }}
+                  onPress={() => setScanned(false)}
+                ></Button>
+              </View>
+              <View style={styles.hackerBackground}>
+                <Text style={styles.hackerHeader}>HackerID</Text>
+                <Text style={styles.hackerText}>{hacker.id}</Text>
+              </View>
+            </>
+          )}
+
+          <SelectList
+            data={data}
+            setSelected={setSelected}
+            dropdownStyles={{ backgroundColor: "#fff" }}
+            dropdownTextStyles={{ color: "#000000", textAlign: "center" }}
+            boxStyles={{
               borderColor: "#fff",
-              borderWidth: 2,
+              backgroundColor: "#fff",
+              width: 300,
+              marginTop: 15,
+              marginBottom: 5,
+            }}
+            inputStyles={{
+              color: "#000000",
+              fontWeight: "700",
             }}
           />
-        </View>
-        {scanned && (
-          <View style={styles.scanAgainButton}>
+          <View style={styles.button}>
             <Button
-              title={"Scan Again"}
+              title="Update Hacker"
               type="outline"
               buttonStyle={{
-                backgroundColor: "#fff",
+                backgroundColor: "#FFF",
                 borderRadius: 5,
-                borderColor: "#000000",
-                borderWidth: 2,
               }}
               titleStyle={{
                 marginHorizontal: 20,
                 color: "black",
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: "700",
               }}
-              onPress={() => setScanned(false)}
-            ></Button>
+              disabled={!scanned}
+              onPress={() => updateValue()}
+            />
           </View>
-        )}
 
-        {!!error && (
-          <View style={styles.error}>
-            <Text>{error}</Text>
+          <View style={styles.button}>
+            <Button
+              title="Navigate DetailedUserView "
+              type="outline"
+              buttonStyle={{
+                backgroundColor: "#fff",
+                borderRadius: 5,
+              }}
+              titleStyle={{
+                marginHorizontal: 20,
+                color: "black",
+                fontSize: 16,
+                fontWeight: "700",
+              }}
+              disabled={!scanned}
+              onPress={() => navigation.navigate("DetailedUserView")}
+            />
           </View>
-        )}
-        <Text style={styles.hackerText}>HackerID: {hacker.id}</Text>
-
-        <SelectList
-          data={data}
-          setSelected={setSelected}
-          dropdownStyles={{ backgroundColor: "#fff" }}
-          dropdownTextStyles={{ color: "#000000" }}
-          boxStyles={{ borderColor: "#000000", borderWidth: 2 }}
-          inputStyles={{
-            color: "#000000",
-            borderColor: "#fff",
-            fontWeight: "700",
-          }}
-        />
-        <View style={styles.button}>
-          <Button
-            title="Update Hacker"
-            type="outline"
-            buttonStyle={{
-              backgroundColor: "#FFF",
-              borderRadius: 5,
-              borderColor: "#000000",
-              borderWidth: 2,
-            }}
-            titleStyle={{
-              marginHorizontal: 20,
-              color: "black",
-              fontSize: 18,
-              fontWeight: "700",
-            }}
-            disabled={!scanned}
-            onPress={() => updateValue()}
-          />
         </View>
-
-        <View style={styles.button}>
-          <Button
-            title="Navigate DetailedUserView "
-            type="outline"
-            buttonStyle={{
-              backgroundColor: "#fff",
-              borderRadius: 5,
-              borderColor: "#000000",
-              borderWidth: 2,
-            }}
-            titleStyle={{
-              marginHorizontal: 20,
-              color: "black",
-              fontSize: 18,
-              fontWeight: "700",
-            }}
-            disabled={!scanned}
-            onPress={() => navigation.navigate("DetailedUserView")}
-          />
-        </View>
-
-        <View style={styles.button}>
-          <Button
-            title="Sign Out"
-            type="outline"
-            buttonStyle={{
-              backgroundColor: "#fff",
-              borderRadius: 5,
-              borderColor: "#000000",
-              borderWidth: 2,
-            }}
-            titleStyle={{
-              marginHorizontal: 20,
-              color: "black",
-              fontSize: 18,
-              fontWeight: "700",
-            }}
-            onPress={() => signOut(auth)}
-          />
-        </View>
-      </View>
+      </ScrollView>
       <FlashMessage position="top" />
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "black",
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 90,
+  },
+  signOutButton: {
+    marginVertical: 10,
+    marginLeft: "auto",
+    width: 140,
   },
   button: {
     marginVertical: 10,
@@ -293,31 +296,41 @@ const styles = StyleSheet.create({
   scanAgainButton: {
     marginTop: 20,
     width: 200,
-    marginBottom: 10,
   },
   mainText: {
     margin: 20,
     fontSize: 20,
   },
-  hackerText: {
-    margin: 20,
-    fontSize: 15,
-  },
-  error: {
+  hackerBackground: {
+    backgroundColor: "#262626",
+    padding: 15,
+    borderRadius: 10,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 10,
-    padding: 10,
+    width: 300,
+  },
+  hackerText: {
     color: "#fff",
-    backgroundColor: "#D54826FF",
+    fontSize: 12,
+  },
+  hackerHeader: {
+    color: "#fff",
+    fontSize: 13,
+    marginBottom: 2,
+    textDecorationLine: "underline",
   },
 
   barcodeBox: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#262626",
     alignContent: "center",
     justifyContent: "center",
     height: 300,
     width: 300,
     overflow: "hidden",
     borderRadius: 30,
+    marginTop: 10,
   },
 });
 

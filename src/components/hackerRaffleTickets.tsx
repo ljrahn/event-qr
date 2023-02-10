@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import {
   Button,
   StyleSheet,
@@ -9,30 +10,17 @@ import {
   TextInput,
 } from "react-native";
 
-const hackerVal = {
-  id: "",
-  breakfastSat: false,
-  breakfastSun: false,
-  dinnerFri: false,
-  dinnerSat: false,
-  lunchSat: false,
-  lunchSun: false,
-  midnightFri: false,
-  midnightSat: false,
-  name: "PLACEHOLDER",
-  workshopRaffle: 0,
-};
-
 const HackerRaffleTickets = (props: any) => {
-  const [workshopRaffle, onChangeWorkshopRaffle] = React.useState(
+  const [workshopRaffle, setWorkshopRaffle] = React.useState(
     props.workshopRaffle
   );
+
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
         <Text style={styles.itemText}>{props.text}</Text>
 
-        <Text style={styles.itemText}>{"  =  " + workshopRaffle}</Text>
+        <Text style={styles.itemText}>{":  " + workshopRaffle}</Text>
         <TextInput
           style={styles.input}
           onChangeText={props.onChangeWorkshopRaffle}
@@ -53,10 +41,12 @@ const styles = StyleSheet.create({
 
   input: {
     height: 40,
-    margin: 12,
+    marginTop: 12,
+    width: 250,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: "#A7A7A7",
+    backgroundColor: "#fff",
+    borderRadius: 5,
     fontWeight: "bold",
   },
 

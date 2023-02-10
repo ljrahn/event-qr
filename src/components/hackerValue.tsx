@@ -36,20 +36,7 @@ const HackerValue = (props: any) => {
     </View>
   );
 };
-/* old button
-    <View style={styles.item}>
-      <Button
-        title={props.text}
-      >
-        <View style={styles.itemLeft}>
-          <View style={styles.square}></View>
-          <Text style={styles.itemText}>{props.text}</Text>
-        </View>
-        <View style={styles.circular}></View>
-      </Button>
-    </View>
-  )
-*/
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

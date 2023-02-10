@@ -20,44 +20,17 @@ import HackerName from "@components/hackerName";
 import firebase from "firebase/compat/app";
 import useFirestore from "@hooks/useFirestore";
 import { useEffect } from "react";
-// import { Button } from "react-native-elements";
-
-/*
- * ?????????????
- * how to import hacker from scanner.tsx
- * import Hacker from "Scanner";
- */
+import FlashMessage from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  // const [hackerVal, sethackerVal] = useState();
-  const { hacker, getHacker, updateHacker, error, setError } = useFirestore();
+  const { hacker, updateHacker, error, setError } = useFirestore();
   // state for hacker values, food tickets
   const [hackerVal, sethackerVal] = useState(hacker);
 
-  const [popupDisplay, setPopupDisplay] = useState({
-    msg: "",
-    displaySuccess: false,
-  });
-
   useEffect(() => {
-    // Remove!!
-    // getHacker("000e556377b34c8d954b67acf22b0ac5");
-
-    // Keep!!
-    if (error) {
-      setPopupDisplay({
-        msg: "There was an error fetching the hacker",
-        displaySuccess: false,
-      });
-      setTimeout(() => {
-        setError("");
-        setPopupDisplay({
-          msg: "",
-          displaySuccess: false,
-        });
-      }, 3000);
-    }
-  }, []);
+    sethackerVal(hacker);
+  }, [hacker]);
 
   const updateDatabase = async () => {
     // Casts workshopRaffle as a Number after textinput from hackerRaffleTickets.tsx
@@ -68,72 +41,45 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     });
 
     if (error) {
-      setPopupDisplay({
-        msg: `There was an error updating the hacker`,
-        displaySuccess: false,
+      showMessage({
+        message: "There was an error updating the hacker",
+        type: "danger",
       });
-      setTimeout(() => {
-        setError("");
-        setPopupDisplay({
-          msg: "",
-          displaySuccess: false,
-        });
-      }, 3000);
+      setError("");
     } else {
-      setPopupDisplay({
-        msg: `Updating hacker ${hackerVal.name} was successful!`,
-        displaySuccess: true,
+      showMessage({
+        message: `Updating hacker ${hackerVal.name} was successful!`,
+        type: "success",
       });
-      setTimeout(() => {
-        setPopupDisplay({
-          msg: "",
-          displaySuccess: false,
-        });
-      }, 3000);
     }
   };
 
-  /*
-  // Adds values to the display (learning)
-  const handleAddValue = () => {
-    console.log(hackerVal);
-    Keyboard.dismiss();
-    sethackerValItems([...hackerValItems, hackerVal])
-    sethackerVal(null);
-  }
-  */
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* Navigation back to Scanner Page
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Scanner")}
-      >
-        <Text style={styles.databaseButtonText}>Go Back to Scanner</Text>
-      </TouchableOpacity>*/}
-      {!!popupDisplay.msg && (
-        <View
-          style={popupDisplay.displaySuccess ? styles.success : styles.error}
-        >
-          <Text>{popupDisplay.msg}</Text>
-        </View>
-      )}
-      {/*<Text>DetailedUserView</Text>*/}
-      {/* checklist wrapper */}
       <ScrollView>
         <View style={styles.checkListWrapper}>
-          {/*<Text style={styles.checkListTitle}>Hacker Data Values</Text>*/}
-          <Text style={styles.hackerNameplate}>Hacker: {hackerVal.name}</Text>
-          {/* Items wrapper */}
+          <Text style={styles.hackerNameplate}>Hacker: {hacker.name}</Text>
           <View style={styles.checkListItem}>
-            {/*
-          TEST FOR GETTING FIREBASE DATA FOR A USERID
-          <HackerValue text={GetUserValues('000e556377b34c8d954b67acf22b0ac5')} />
-          
-          PROPOSED CHECKBOX FROM LAST MEETING
-          <Checkbox onChange={() => setState(...state, friBreakfast: true)} />
-           */}
+            <HackerName
+              text={"Hacker Name"}
+              name={hackerVal.name}
+              onChangeName={(name: any) =>
+                sethackerVal({
+                  ...hackerVal,
+                  name,
+                })
+              }
+            />
+            <HackerRaffleTickets
+              text={"Raffle Tickets"}
+              workshopRaffle={hackerVal.workshopRaffle}
+              onChangeWorkshopRaffle={(workshopRaffle: any) =>
+                sethackerVal({
+                  ...hackerVal,
+                  workshopRaffle,
+                })
+              }
+            />
 
             <HackerValue
               text={"Friday Dinner"}
@@ -195,25 +141,25 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
               }
               value={hackerVal.lunchSun}
             />
-            <HackerName
-              text={"Hacker Name"}
-              name={hackerVal.name}
-              onChangeName={(name: any) =>
+            <HackerValue
+              text={"Friday Midnight"}
+              onChange={() =>
                 sethackerVal({
                   ...hackerVal,
-                  name,
+                  midnightFri: !hackerVal.midnightFri,
                 })
               }
+              value={hackerVal.midnightFri}
             />
-            <HackerRaffleTickets
-              text={"Raffle Tickets"}
-              workshopRaffle={hackerVal.workshopRaffle}
-              onChangeWorkshopRaffle={(workshopRaffle: any) =>
+            <HackerValue
+              text={"Saturday Midnight"}
+              onChange={() =>
                 sethackerVal({
                   ...hackerVal,
-                  workshopRaffle,
+                  midnightSat: !hackerVal.midnightSat,
                 })
               }
+              value={hackerVal.midnightSat}
             />
           </View>
 
@@ -224,44 +170,8 @@ const DetailedUserView: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             <Text style={styles.databaseButtonText}>UPDATE HACKER</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Keyboard Input */}
-        {/* @ TextInputA value is the entered text i.e hacker Name and Raffle 
-        value={textInput}
-        onChangeText={text => sethackerVal(text)}*/}
-        {/* @TouchableOpacity onPress={() => handleAddValue()} 
-      
-      
-      
-        <View style={styles.databaseButton}>
-          <Button
-            title="UPDATE DATABASE"
-            // style={styles.databaseButton}
-            color="#FF5F1F"
-            onPress={() => sethackerVal({
-              ...hackerVal
-            })}
-          />
-      
-      */}
       </ScrollView>
-      {/*
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.writeDataWrapper}
-        >
-        <TextInput 
-        style={styles.input} 
-        placeholder={'Update Text'}
-        />
-        <TouchableOpacity
-        >
-          <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-*/}
+      <FlashMessage position="top" />
     </SafeAreaView>
   );
 };
@@ -270,9 +180,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
-    //paddingTop: 20,
-    //alignItems: "center",
-    //justifyContent: "center"
   },
   checkListWrapper: {
     paddingTop: 20,
@@ -331,17 +238,16 @@ const styles = StyleSheet.create({
   databaseButton: {
     width: "100%",
     height: 70,
-    backgroundColor: "darkgray",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
 
-    borderRadius: 25,
+    borderRadius: 10,
     elevation: 3,
-    fontSize: 70,
     fontWeight: "bold",
   },
   databaseButtonText: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#000",
   },

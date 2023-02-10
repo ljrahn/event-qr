@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -31,7 +31,7 @@ const HackerName = (props: any) => {
       <View style={styles.itemLeft}>
         <Text style={styles.itemText}>{props.text}</Text>
 
-        <Text style={styles.itemText}>{"  =  " + prevName}</Text>
+        <Text style={styles.itemText}>{":  " + prevName}</Text>
         <TextInput
           style={styles.input}
           onChangeText={props.onChangeName}
@@ -51,10 +51,13 @@ const styles = StyleSheet.create({
 
   input: {
     height: 40,
-    margin: 12,
+    marginTop: 12,
+    width: 250,
     borderWidth: 1,
     padding: 10,
-    backgroundColor: "#A7A7A7",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    fontWeight: "bold",
   },
 
   item: {
