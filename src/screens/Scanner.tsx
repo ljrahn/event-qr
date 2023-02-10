@@ -151,7 +151,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   return (
     <>
-      <ScrollView style={{ backgroundColor: "black" }}>
+      <ScrollView style={{ backgroundColor: "#fff" }}>
         <View style={styles.container}>
           <View style={{ width: 300 }}>
             <View style={styles.signOutButton}>
@@ -161,6 +161,8 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
                 buttonStyle={{
                   backgroundColor: "#fff",
                   borderRadius: 5,
+                  borderColor: "#000000",
+                  borderWidth: 2,
                 }}
                 titleStyle={{
                   marginHorizontal: 20,
@@ -215,16 +217,16 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             data={data}
             setSelected={setSelected}
             dropdownStyles={{ backgroundColor: "#fff" }}
-            dropdownTextStyles={{ color: "#000000", textAlign: "center" }}
+            dropdownTextStyles={{ color: "#262626", textAlign: "center" }}
             boxStyles={{
-              borderColor: "#fff",
+              borderColor: "#262626",
               backgroundColor: "#fff",
               width: 300,
               marginTop: 15,
               marginBottom: 5,
             }}
             inputStyles={{
-              color: "#000000",
+              color: "#262626",
               fontWeight: "700",
             }}
           />
@@ -233,12 +235,14 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
               title="Update Hacker"
               type="outline"
               buttonStyle={{
-                backgroundColor: "#FFF",
+                backgroundColor: "#262626",
                 borderRadius: 5,
+                borderWidth: 2,
+                borderColor: "#262626"
               }}
               titleStyle={{
                 marginHorizontal: 20,
-                color: "black",
+                color: "#fff",
                 fontSize: 16,
                 fontWeight: "700",
               }}
@@ -252,12 +256,14 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
               title="Navigate DetailedUserView "
               type="outline"
               buttonStyle={{
-                backgroundColor: "#fff",
+                backgroundColor: "#262626",
                 borderRadius: 5,
+                borderWidth: 2,
+                borderColor: "#262626"
               }}
               titleStyle={{
                 marginHorizontal: 20,
-                color: "black",
+                color: "#fff",
                 fontSize: 16,
                 fontWeight: "700",
               }}
@@ -267,7 +273,6 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      <FlashMessage position="top" />
     </>
   );
 };
@@ -275,7 +280,7 @@ const HomeScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 90,

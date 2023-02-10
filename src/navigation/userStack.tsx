@@ -1,6 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import FlashMessage from "react-native-flash-message";
 
 import Scanner from "@screens/Scanner";
 import DetailedUserView from "@screens/DetailedUserView";
@@ -14,6 +15,7 @@ export default function UserStack() {
         <Stack.Screen name="Scanner" component={Scanner} />
         <Stack.Screen name="DetailedUserView" component={DetailedUserView} />
       </Stack.Navigator>
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }
