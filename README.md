@@ -1,4 +1,4 @@
-# Food Ticket Scanner
+# EventQR
 
 ## Usage
 
@@ -21,7 +21,7 @@ note the use of "--" here. it is needed when you want to include a command line 
 
 ### App
 
-Change name of `.env.example` to `.env` and set environment variables. Firebase variables can be found in the firebase setup.
+Copy paste `.env.example` and rename to `.env` and set environment variables. Firebase variables can be found in the firebase setup.
 
 In order to login to the app, one must add the user credentials to firebase authentication in the firebase webclient. Then run:
 
